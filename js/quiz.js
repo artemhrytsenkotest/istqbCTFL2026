@@ -34,6 +34,7 @@ function renderQuiz(container, subId, setIdx) {
       </div>`;
 
     attachSelectionHandlers(container, questions, selections, updateProgress);
+    attachHintHandlers(container, questions);
     container.querySelector("#submitBtn").addEventListener("click", () => {
       const unanswered = questions.length - countAnswered(selections);
       if (unanswered > 0) {
@@ -54,6 +55,13 @@ function renderQuiz(container, subId, setIdx) {
     const total = questions.length;
     const pct = Math.round((correct / total) * 100);
     recordScore(quizKey(subId, setIdx), pct);
+    recordAttempt({
+      kind: "quiz",
+      title: `${subId} ${sub.title} · ${set.name}`,
+      sub: subId,
+      pct, correct, total,
+      questions, selections,
+    });
     const passed = pct >= 65;
 
     const reviewItems = wrong.map((qi) => renderReviewCard(questions[qi], qi, selections[qi])).join("");

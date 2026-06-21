@@ -67,18 +67,96 @@ function renderHome() {
        </div>`
     : `<div class="weak card"><h3>Focus areas</h3><p class="muted">All attempted sets are at or above 65%. 🎉</p></div>`;
 
+  const attempts = getHistory().length;
+
   appEl().innerHTML = `
     <div class="hero card">
       <div>
         <h2>Practice by subchapter or take a full mock exam</h2>
         <p class="muted">Based on the ISTQB Certified Tester Foundation Level Syllabus v4.0.1.</p>
       </div>
-      <a class="btn primary big" href="#/exam">
-        Mock Exam${examBest !== null ? ` · best ${examBest}%` : ""}
-      </a>
+      <div class="hero-actions">
+        <a class="btn primary big" href="#/exam">
+          Mock Exam${examBest !== null ? ` · best ${examBest}%` : ""}
+        </a>
+        <a class="btn" href="#/history">History${attempts ? ` (${attempts})` : ""}</a>
+        <button class="btn ghost danger" id="resetBtn" type="button">Reset progress</button>
+      </div>
     </div>
     ${weakHtml}
     ${chapters}`;
+
+  document.getElementById("resetBtn").addEventListener("click", () => {
+    if (
+      confirm(
+        "Reset all progress?\n\nThis permanently deletes your best scores and your test history on this device. This cannot be undone."
+      )
+    ) {
+      resetProgress();
+      renderHome();
+    }
+  });
+}
+
+/* ---- History list ---- */
+function fmtDate(ts) {
+  const d = new Date(ts);
+  return d.toLocaleDateString() + " " + d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+}
+
+function renderHistory() {
+  const history = getHistory();
+  const rows = history
+    .map((h, i) => {
+      const passed = h.kind === "exam" ? h.correct >= 26 : h.pct >= 65;
+      return `
+        <a class="hist-row" href="#/history/${i}">
+          <span class="hist-kind ${h.kind}">${h.kind === "exam" ? "Exam" : "Quiz"}</span>
+          <span class="hist-title">${escapeHtml(h.title)}</span>
+          <span class="hist-score badge ${passed ? "good" : "low"}">${h.pct}% · ${h.correct}/${h.total}</span>
+          <span class="hist-date muted">${fmtDate(h.date)}</span>
+        </a>`;
+    })
+    .join("");
+
+  appEl().innerHTML = `
+    <div class="crumbs"><a href="#/">&larr; Home</a></div>
+    <h2>Test History</h2>
+    ${
+      history.length
+        ? `<p class="muted">Your last ${history.length} completed attempt(s). Open any to review every question and explanation.</p>
+           <div class="hist-list">${rows}</div>`
+        : `<div class="card"><p>No completed tests yet. Finish a quiz set or a mock exam and it will appear here.</p></div>`
+    }`;
+}
+
+/* ---- History detail (re-render the stored review) ---- */
+function renderHistoryDetail(index) {
+  const a = getAttempt(index);
+  if (!a) {
+    appEl().innerHTML = `<div class="crumbs"><a href="#/history">&larr; History</a></div><p>Attempt not found.</p>`;
+    return;
+  }
+  const passed = a.kind === "exam" ? a.correct >= 26 : a.pct >= 65;
+  const review = a.questions.map((q, qi) => renderReviewCard(q, qi, a.selections[qi])).join("");
+  appEl().innerHTML = `
+    <div class="crumbs"><a href="#/history">&larr; History</a></div>
+    <h2>${escapeHtml(a.title)}</h2>
+    <p class="muted">${fmtDate(a.date)}${a.timedOut ? " · time expired" : ""}</p>
+    <div class="score-banner ${passed ? "pass" : "fail"}">
+      <div class="score-pct">${a.pct}%</div>
+      <div class="score-detail">
+        <div>${a.correct} / ${a.total} correct</div>
+        <div class="score-tag">${passed ? "Pass" : "Below pass mark"}</div>
+      </div>
+    </div>
+    <h3>Full review</h3>
+    ${review}
+    <div class="quiz-actions">
+      <a class="btn" href="#/history">Back to history</a>
+      <a class="btn" href="#/">Home</a>
+    </div>`;
+  window.scrollTo(0, 0);
 }
 
 /* ---- Subchapter (3 sets) ---- */
@@ -128,6 +206,10 @@ function router() {
     renderQuiz(root, parts[1], +parts[2]);
   } else if (parts[0] === "exam") {
     renderExam(root);
+  } else if (parts[0] === "history" && parts[1] != null) {
+    renderHistoryDetail(+parts[1]);
+  } else if (parts[0] === "history") {
+    renderHistory();
   } else {
     renderHome();
   }
@@ -135,9 +217,12 @@ function router() {
 }
 
 function highlightNav() {
-  const onExam = location.hash.startsWith("#/exam");
-  document.getElementById("navHome").classList.toggle("active", !onExam);
+  const hash = location.hash;
+  const onExam = hash.startsWith("#/exam");
+  const onHistory = hash.startsWith("#/history");
+  document.getElementById("navHome").classList.toggle("active", !onExam && !onHistory);
   document.getElementById("navExam").classList.toggle("active", onExam);
+  document.getElementById("navHistory").classList.toggle("active", onHistory);
 }
 
 /* ---- Theme ---- */

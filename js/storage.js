@@ -38,6 +38,36 @@ function quizKey(subId, setIdx) {
   return "quiz:" + subId + ":" + setIdx;
 }
 
+/* ---- History of completed attempts ----
+   Each entry snapshots enough to re-render the full review later:
+   { kind, title, sub, pct, correct, total, date, timedOut?, questions, selections } */
+const HISTORY_CAP = 100;
+
+function recordAttempt(entry) {
+  const s = loadState();
+  s.history = s.history || [];
+  s.history.unshift({ ...entry, date: Date.now() });
+  if (s.history.length > HISTORY_CAP) s.history.length = HISTORY_CAP;
+  saveState(s);
+}
+
+function getHistory() {
+  return loadState().history || [];
+}
+
+function getAttempt(index) {
+  const h = getHistory();
+  return index >= 0 && index < h.length ? h[index] : null;
+}
+
+/* Wipe all scores and history (keeps theme). */
+function resetProgress() {
+  const s = loadState();
+  delete s.scores;
+  delete s.history;
+  saveState(s);
+}
+
 function getTheme() {
   return loadState().theme || "light";
 }
@@ -51,5 +81,9 @@ function setTheme(theme) {
 window.recordScore = recordScore;
 window.getBestScore = getBestScore;
 window.quizKey = quizKey;
+window.recordAttempt = recordAttempt;
+window.getHistory = getHistory;
+window.getAttempt = getAttempt;
+window.resetProgress = resetProgress;
 window.getTheme = getTheme;
 window.setTheme = setTheme;

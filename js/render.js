@@ -68,7 +68,38 @@ function renderQuestionCard(q, qi, total, showSource) {
       ${renderStem(q)}
       <div class="select-hint">${selectHint(q)}</div>
       <div class="options">${renderOptionInputs(q, qi)}</div>
+      <div class="hint-row">
+        <button type="button" class="btn ghost small hint-btn" data-q="${qi}">💡 Hint</button>
+        <span class="hint-text" data-q="${qi}" hidden></span>
+      </div>
     </div>`;
+}
+
+/* Wire the per-question Hint buttons. Reveals the correct option(s) by
+   marking them and naming the letters, so the learner can self-check before
+   submitting. Toggling hides it again. */
+function attachHintHandlers(container, questions) {
+  container.querySelectorAll(".hint-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const qi = +btn.dataset.q;
+      const q = questions[qi];
+      const card = container.querySelector(`#qcard-${qi}`);
+      const textEl = card.querySelector(".hint-text");
+      const opts = card.querySelectorAll(".option");
+      const showing = btn.classList.toggle("revealed");
+      const ans = answerArray(q);
+      opts.forEach((o) => o.classList.toggle("hint-correct", showing && ans.includes(+o.dataset.o)));
+      if (showing) {
+        const letters = ans.slice().sort((a, b) => a - b).map(letter).join(" & ");
+        textEl.textContent = `Correct: ${letters}`;
+        textEl.hidden = false;
+        btn.textContent = "💡 Hide hint";
+      } else {
+        textEl.hidden = true;
+        btn.textContent = "💡 Hint";
+      }
+    });
+  });
 }
 
 /* Wire change handlers so selections[] always holds an array of chosen indices. */
@@ -147,6 +178,7 @@ function renderReviewCard(q, qi, selection) {
 window.letter = letter;
 window.selectHint = selectHint;
 window.renderQuestionCard = renderQuestionCard;
+window.attachHintHandlers = attachHintHandlers;
 window.attachSelectionHandlers = attachSelectionHandlers;
 window.countAnswered = countAnswered;
 window.renderReviewCard = renderReviewCard;

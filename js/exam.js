@@ -65,6 +65,7 @@ function renderExam(container) {
         </div>`;
 
       attachSelectionHandlers(container, questions, selections, updateAnswered);
+      attachHintHandlers(container, questions);
       const finish = () => {
         if (confirm("Finish the exam and see your result?")) submit(false);
       };
@@ -96,6 +97,13 @@ function renderExam(container) {
       const pct = Math.round((correct / questions.length) * 100);
       const passed = correct >= EXAM_PASS;
       recordScore("exam", pct);
+      recordAttempt({
+        kind: "exam",
+        title: "Mock Exam",
+        pct, correct, total: questions.length,
+        timedOut,
+        questions, selections,
+      });
 
       container.innerHTML = `
         <div class="crumbs"><a href="#/">&larr; Home</a></div>

@@ -12,3 +12,6 @@ Thumbs.db
 # Python
 __pycache__/
 *.pyc
+
+# Local-only files (kept on disk, not pushed)
+ЯК_КОРИСТУВАТИСЬ.md
