@@ -54,10 +54,9 @@ function renderHome() {
 
   const weakHtml = weak.length
     ? `<div class="weak card">
-         <h3>Focus areas</h3>
+         <h3>Focus areas <span class="count">${weak.length}</span></h3>
          <p class="muted">Quiz sets below the 65% pass mark (or not yet attempted):</p>
-         <ul>${weak
-           .slice(0, 12)
+         <ul class="weak-list">${weak
            .map(
              (w) =>
                `<li><a href="#/sub/${w.id}">${w.id} ${escapeHtml(w.title)}</a> &middot; ${escapeHtml(
