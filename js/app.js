@@ -229,7 +229,11 @@ function highlightNav() {
 function applyTheme(theme) {
   document.documentElement.setAttribute("data-theme", theme);
   const btn = document.getElementById("themeBtn");
-  if (btn) btn.textContent = theme === "dark" ? "☀️ Light" : "🌙 Dark";
+  if (btn)
+    btn.innerHTML =
+      theme === "dark"
+        ? '☀️<span class="btn-label">Light</span>'
+        : '🌙<span class="btn-label">Dark</span>';
 }
 
 function initTheme() {
