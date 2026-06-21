@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ISTQB CTFL v4.0.1 — Exam Prep</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#/">
+        <span class="logo">ISTQB</span>
+        <span class="brand-text">CTFL v4.0.1 Prep</span>
+      </a>
+      <nav class="nav">
+        <a id="navHome" href="#/">Syllabus</a>
+        <a id="navExam" href="#/exam">Mock Exam</a>
+        <button id="themeBtn" class="btn ghost" type="button">🌙 Dark</button>
+      </nav>
+    </header>
+
+    <main id="app" class="container"></main>
+
+    <footer class="footer">
+      <p>
+        Practice questions authored from the ISTQB® Certified Tester Foundation Level
+        Syllabus v4.0.1. Unofficial study aid — not affiliated with or endorsed by the ISTQB®.
+      </p>
+    </footer>
+
+    <!-- Core (order matters: util + data must precede question files) -->
+    <script src="js/util.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/storage.js"></script>
+
+    <!-- Question content (Chapter 1) -->
+    <script src="data/questions/q-1-1.js"></script>
+    <script src="data/questions/q-1-2.js"></script>
+    <script src="data/questions/q-1-3.js"></script>
+    <script src="data/questions/q-1-4.js"></script>
+    <script src="data/questions/q-1-5.js"></script>
+    <!-- Chapter 2 -->
+    <script src="data/questions/q-2-1.js"></script>
+    <script src="data/questions/q-2-2.js"></script>
+    <script src="data/questions/q-2-3.js"></script>
+
+    <!-- Engines + app shell -->
+    <script src="js/render.js"></script>
+    <script src="js/quiz.js"></script>
+    <script src="js/exam.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
