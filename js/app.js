@@ -59,9 +59,9 @@ function renderHome() {
          <ul class="weak-list">${weak
            .map(
              (w) =>
-               `<li><a href="#/sub/${w.id}">${w.id} ${escapeHtml(w.title)}</a> &middot; ${escapeHtml(
+               `<li><a href="#/sub/${w.id}">${w.id} ${escapeHtml(w.title)}</a><span class="weak-set">${escapeHtml(
                  w.set
-               )} ${w.best === null ? "(not attempted)" : "(" + w.best + "%)"}</li>`
+               )} ${w.best === null ? "(not attempted)" : "(" + w.best + "%)"}</span></li>`
            )
            .join("")}</ul>
        </div>`

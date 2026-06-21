@@ -160,7 +160,8 @@ h3 { margin: 20px 0 10px; }
   overflow-y: auto;
   padding-right: 6px;
 }
-.weak-list li { margin: 3px 0; }
+.weak-list li { margin: 6px 0; }
+.weak-set { display: block; color: var(--muted); font-size: 13px; margin-top: 1px; }
 
 /* ===== Badges ===== */
 .badge { font-size: 12px; font-weight: 700; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
