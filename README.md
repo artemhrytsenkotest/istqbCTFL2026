@@ -71,3 +71,22 @@ tools/validate.py          structural validator for question files
 
 The subchapter automatically switches from "coming soon" to playable, and its
 questions are included in the mock-exam pool.
+
+## Disclaimer
+
+This is an **unofficial study aid** and is **not affiliated with, authorized by,
+or endorsed by the ISTQB®**. ISTQB® is a registered trademark of the
+International Software Testing Qualifications Board.
+
+The practice questions are **original wording authored from** the publicly
+available *ISTQB Certified Tester Foundation Level Syllabus v4.0.1*; they are not
+copied from any official ISTQB exam or question bank. The ISTQB syllabus PDF and
+the official sample exams are copyrighted by the ISTQB and are **not included** in
+this repository. Passing these practice quizzes does not confer any
+certification — only the official ISTQB exam does.
+
+## License
+
+The application code and the original practice questions in this repository are
+released under the [MIT License](LICENSE). This license does not grant any rights
+to ISTQB® materials (see the Disclaimer above).
