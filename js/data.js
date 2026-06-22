@@ -71,6 +71,24 @@ function registerQuestions(id, data) {
   QUESTION_BANK[id] = data;
 }
 
+/* Interactive study material, keyed by subchapter id and populated by the
+   data/materials/m-X-Y.js files:
+   MATERIALS_BANK["1.1"] = { title, los, bigPicture, blocks: [...] } */
+const MATERIALS_BANK = {};
+
+function registerMaterials(id, data) {
+  MATERIALS_BANK[id] = data;
+}
+
+function getMaterials(id) {
+  return MATERIALS_BANK[id] || null;
+}
+
+/* True when a subchapter has authored study material. */
+function hasMaterials(id) {
+  return !!MATERIALS_BANK[id];
+}
+
 /* Returns the flat list of subchapter meta objects for a chapter. */
 function getSubchapter(id) {
   for (const ch of SYLLABUS) {
@@ -104,3 +122,7 @@ window.registerQuestions = registerQuestions;
 window.getSubchapter = getSubchapter;
 window.hasContent = hasContent;
 window.allQuestions = allQuestions;
+window.MATERIALS_BANK = MATERIALS_BANK;
+window.registerMaterials = registerMaterials;
+window.getMaterials = getMaterials;
+window.hasMaterials = hasMaterials;

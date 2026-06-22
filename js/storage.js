@@ -60,11 +60,39 @@ function getAttempt(index) {
   return index >= 0 && index < h.length ? h[index] : null;
 }
 
-/* Wipe all scores and history (keeps theme). */
+/* ---- Study material "learned" state ----
+   A flat map of card keys the user has marked as learned: { "learn:1.1:0": true } */
+function learnKey(subId, idx) {
+  return "learn:" + subId + ":" + idx;
+}
+
+function setLearned(key, val) {
+  const s = loadState();
+  s.learned = s.learned || {};
+  if (val) s.learned[key] = true;
+  else delete s.learned[key];
+  saveState(s);
+}
+
+function isLearned(key) {
+  const s = loadState();
+  return !!(s.learned && s.learned[key]);
+}
+
+/* Number of learned cards for a subchapter (keys "learn:<subId>:*"). */
+function countLearned(subId) {
+  const s = loadState();
+  if (!s.learned) return 0;
+  const prefix = "learn:" + subId + ":";
+  return Object.keys(s.learned).filter((k) => k.startsWith(prefix)).length;
+}
+
+/* Wipe all scores, history, and learned state (keeps theme). */
 function resetProgress() {
   const s = loadState();
   delete s.scores;
   delete s.history;
+  delete s.learned;
   saveState(s);
 }
 
@@ -81,6 +109,10 @@ function setTheme(theme) {
 window.recordScore = recordScore;
 window.getBestScore = getBestScore;
 window.quizKey = quizKey;
+window.learnKey = learnKey;
+window.setLearned = setLearned;
+window.isLearned = isLearned;
+window.countLearned = countLearned;
 window.recordAttempt = recordAttempt;
 window.getHistory = getHistory;
 window.getAttempt = getAttempt;

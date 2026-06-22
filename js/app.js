@@ -204,6 +204,10 @@ function router() {
     renderSubchapter(parts[1]);
   } else if (parts[0] === "quiz" && parts[1] != null && parts[2] != null) {
     renderQuiz(root, parts[1], +parts[2]);
+  } else if (parts[0] === "study" && parts[1]) {
+    renderStudy(parts[1]);
+  } else if (parts[0] === "study") {
+    renderMaterialsHome();
   } else if (parts[0] === "exam") {
     renderExam(root);
   } else if (parts[0] === "history" && parts[1] != null) {
@@ -218,9 +222,11 @@ function router() {
 
 function highlightNav() {
   const hash = location.hash;
+  const onStudy = hash.startsWith("#/study");
   const onExam = hash.startsWith("#/exam");
   const onHistory = hash.startsWith("#/history");
-  document.getElementById("navHome").classList.toggle("active", !onExam && !onHistory);
+  document.getElementById("navHome").classList.toggle("active", !onStudy && !onExam && !onHistory);
+  document.getElementById("navStudy").classList.toggle("active", onStudy);
   document.getElementById("navExam").classList.toggle("active", onExam);
   document.getElementById("navHistory").classList.toggle("active", onHistory);
 }

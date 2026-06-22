@@ -368,6 +368,108 @@ h3 { margin: 20px 0 10px; }
 .hist-score { grid-area: score; justify-self: end; }
 .hist-date { grid-area: date; font-size: 12px; }
 
+/* ===== Study ===== */
+.study-progress { margin: 2px 0 14px; }
+.big-picture { display: block; }
+.bp-tag, .mnemonic-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--primary);
+  margin-bottom: 6px;
+}
+.big-picture p { margin: 0; }
+
+/* Flip cards */
+.flip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.flip-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.flip-card.learned { border-left-color: var(--good); }
+.flip-body { flex: 1; padding: 16px 16px 8px; cursor: pointer; min-height: 96px; }
+.flip-front { display: flex; flex-direction: column; gap: 8px; }
+.flip-term { font-weight: 700; font-size: 16px; }
+.flip-hint { font-size: 12px; color: var(--muted); font-style: italic; }
+.flip-back { display: none; font-size: 14px; color: var(--text); }
+.flip-card.flipped .flip-front { display: none; }
+.flip-card.flipped .flip-back { display: block; }
+.flip-learn {
+  border: none;
+  border-top: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 13px;
+  padding: 8px 16px;
+  text-align: left;
+  cursor: pointer;
+}
+.flip-learn:hover { background: var(--surface-2); color: var(--text); }
+.flip-card.learned .flip-learn { color: var(--good); }
+
+/* Comparison table */
+.cmp-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.cmp-table th, .cmp-table td {
+  text-align: left;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  font-size: 14px;
+}
+.cmp-table thead th { background: var(--surface-2); font-weight: 700; }
+.cmp-table tbody tr:last-child td { border-bottom: none; }
+.cmp-table td + td, .cmp-table th + th { border-left: 1px solid var(--border); }
+
+/* Study list + mnemonic */
+.study-list { margin: 0 0 14px; padding-left: 22px; }
+.study-list li { margin: 5px 0; }
+.mnemonic-box {
+  border-left: 3px solid var(--primary);
+  background: var(--surface-2);
+  padding: 10px 14px;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 18px;
+  font-size: 14px;
+}
+.mnemonic-box .mnemonic-tag { margin-right: 6px; margin-bottom: 0; }
+
+/* Self-check */
+.selfcheck {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+}
+.selfcheck-q { font-weight: 600; margin-bottom: 10px; }
+.selfcheck-a {
+  display: none;
+  margin-top: 10px;
+  padding: 10px 12px;
+  background: var(--good-bg);
+  color: var(--text);
+  border-radius: 8px;
+  font-size: 14px;
+}
+.selfcheck.revealed .selfcheck-a { display: block; }
+
 /* ===== Footer ===== */
 .footer {
   border-top: 1px solid var(--border);
